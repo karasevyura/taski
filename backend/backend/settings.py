@@ -1,13 +1,36 @@
 from pathlib import Path
+import os
+from dotenv import find_dotenv, load_dotenv
+
+load_dotenv(find_dotenv())
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+sentry_sdk.init(
+dsn="https://cd9c37b8bdd07cd91d68df5f1b47cf40@o4505703040679936.ingest.sentry.io/4505703043825664",
+integrations=[DjangoIntegration()],
+# If you wish to associate users to errors (assuming you are using
+# django.contrib.auth) you may enable sending PII data.
+send_default_pii=True,
+# Set traces_sample_rate to 1.0 to capture 100%
+# of transactions for performance monitoring.
+# We recommend adjusting this value in production.
+traces_sample_rate=1.0,
+# To set a uniform sample rate
+# Set profiles_sample_rate to 1.0 to profile 100%
+# of sampled transactions.
+# We recommend adjusting this value in production,
+profiles_sample_rate=1.0,
+)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-SECRET_KEY = 'django-insecure-j_89af+30&&4qm*8z9_(^zz8p4-ho8z_m6ylm0s$h!-p@on1_^'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['hiyandex.hopto.org','158.160.21.158', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -103,7 +126,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = 'static_backend'
+STATIC_ROOT = BASE_DIR / 'static_backend' 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
